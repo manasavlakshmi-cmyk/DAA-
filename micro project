@@ -1,0 +1,66 @@
+import java.util.*;
+
+public class Solution {
+
+    static String passwordCracker(String[] passwords, String loginAttempt) {
+        Map<String, String> memo = new HashMap<>();
+        return dfs(passwords, loginAttempt, memo);
+    }
+
+    static String dfs(String[] passwords, String attempt, Map<String, String> memo) {
+        
+        if (attempt.length() == 0) {
+            return "";
+        }
+
+        if (memo.containsKey(attempt)) {
+            return memo.get(attempt);
+        }
+
+        for (String p : passwords) {
+            if (attempt.startsWith(p)) {
+            for (String p : passwords) {
+            if (attempt.startsWith(p)) {
+                String remaining = attempt.substring(p.length());
+                String result = dfs(passwords, remaining, memo);
+
+                if (result != null) {
+                    String ans = p + (result.equals("") ? "" : " " + result);
+                    memo.put(attempt, ans);
+                    return ans;
+                }
+            }
+        }
+
+        memo.put(attempt, null);
+        return null;
+    }
+
+    public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+
+        int t = sc.nextInt();
+
+        while (t-- > 0) {
+
+            int n = sc.nextInt();
+            String[] passwords = new String[n];
+
+            for (int i = 0; i < n; i++) {
+                passwords[i] = sc.next();
+            }
+
+            String loginAttempt = sc.next();
+
+            String result = passwordCracker(passwords, loginAttempt);
+
+            if (result == null) {
+             System.out.println("WRONG PASSWORD");
+            } else {
+                System.out.println(result);
+            }
+        }
+
+        sc.close();
+    }
+}
